@@ -19,6 +19,29 @@ Both capabilities **reuse the same vector database, embeddings, and PDF ingestio
 
 ---
 
+## 🖥️ User Interface
+
+### NG12 Cancer Risk Assessor
+The Assessor UI allows clinicians to input a Patient ID and receive an evidence-based
+NG12 referral decision with guideline citations.
+
+![Assessor UI](docs/screenshots/assessor-ui.png)
+
+---
+
+### Conversational NG12 Assistant
+The Chat UI enables multi-turn clinical questioning over the NG12 guidelines,
+reusing the same RAG pipeline and citation logic.
+
+![Chat UI](docs/screenshots/chat-ui.png)
+
+---
+
+### Evidence & Citations
+All clinical statements are grounded in retrieved NG12 passages with page-level citations.
+
+![Citations](docs/screenshots/citations.png)
+
 ## 🧠 Architecture Summary
 
 **Backend**
