@@ -19,28 +19,6 @@ Both capabilities **reuse the same vector database, embeddings, and PDF ingestio
 
 ---
 
-## 🖥️ User Interface
-
-### NG12 Cancer Risk Assessor
-The Assessor UI allows clinicians to input a Patient ID and receive an evidence-based
-NG12 referral decision with guideline citations.
-
-![Assessor UI](docs/screenshots/assessor-ui.png)
-
----
-
-### Conversational NG12 Assistant
-The Chat UI enables multi-turn clinical questioning over the NG12 guidelines,
-reusing the same RAG pipeline and citation logic.
-
-![Chat UI](docs/screenshots/chat-ui.png)
-
----
-
-### Evidence & Citations
-All clinical statements are grounded in retrieved NG12 passages with page-level citations.
-
-![Citations](docs/screenshots/citations.png)
 
 ## 🧠 Architecture Summary
 
@@ -124,6 +102,52 @@ If insufficient evidence is found in NG12, the agent explicitly responds:
 
 ---
 
+## ⚠️ Challenges Faced & Solutions
+
+### 1. Grounding LLM Responses to Clinical Guidelines
+**Challenge:**  
+Preventing hallucinated medical thresholds or invented referral criteria.
+
+**Solution:**  
+- Retrieval-first reasoning
+- Answer generation strictly limited to NG12 chunks
+- Mandatory citation verification for every clinical statement
+
+---
+
+### 2. Reusing One RAG Pipeline Across Two Agents
+**Challenge:**  
+Supporting both deterministic decision support and conversational querying without duplicate ingestion or embeddings.
+
+**Solution:**  
+- Centralized PDF ingestion pipeline
+- Shared ChromaDB vector store
+- Same retriever reused by Assessor and Chat agents
+
+---
+
+### 3. Multi-Turn Context Without Losing Grounding
+**Challenge:**  
+Handling follow-ups (e.g., age thresholds) without drifting beyond NG12 evidence.
+
+**Solution:**  
+- Lightweight session memory
+- Every response still requires fresh retrieval
+- Context used only to refine queries, not invent answers
+
+---
+
+### 4. Safe Failure for Out-of-Scope Questions
+**Challenge:**  
+Users asking about treatments or prognosis not covered by NG12.
+
+**Solution:**  
+- Confidence-based guardrails
+- Explicit refusal with explanation
+- Zero speculative medical advice
+
+
+---
 ## 🚀 Running the Project
 
 ### Backend
@@ -136,3 +160,43 @@ uvicorn app.main:app --reload
 cd frontend
 npm install
 npm run dev
+
+---
+
+### Documentation 
+
+📄 Documentation
+
+PROMPTS.md – Assessor agent system prompt (Part 1)
+
+CHAT_PROMPTS.md – Conversational agent grounding & guardrails (Part 2)
+
+
+## 🖥️ User Interface
+
+### NG12 Cancer Risk Assessor
+The Assessor UI allows clinicians to input a Patient ID and receive an evidence-based
+NG12 referral decision with guideline citations.
+
+![Assessor UI](docs/screenshots/assessor-ui.png)
+
+---
+
+### Conversational NG12 Assistant
+The Chat UI enables multi-turn clinical questioning over the NG12 guidelines,
+reusing the same RAG pipeline and citation logic.
+
+![Chat UI](docs/screenshots/chat-ui.png)
+
+---
+
+### Evidence & Citations
+All clinical statements are grounded in retrieved NG12 passages with page-level citations.
+
+![Citations](docs/screenshots/citations.png)
+
+---
+
+### Summary
+
+This project demonstrates LLM orchestration, grounded RAG design, and clinical-safe reasoning using a single reusable pipeline over structured and unstructured healthcare data.
