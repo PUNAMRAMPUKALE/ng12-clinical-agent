@@ -1,0 +1,8 @@
+:root{
+  --bg: #070B14;
+  --surface: rgba(17, 24, 39, 0.78);     /* higher opacity */
+  --surface-2: rgba(17, 24, 39, 0.92);   /* used for result boxes */
+  --border: rgba(148, 163, 184, 0.18);
+  --text: rgba(255,255,255,0.92);        /* brighter */
+  --muted: rgba(255,255,255,0.68);
+}
